@@ -2,16 +2,38 @@
 from pygame import *
 
 
-
-
 class BordReader:
     def __init__(self):
-        self.bordFile = "bord.txt"
+        self.bordFile = "board.txt"
+        self.board = []
+
+        class Tile:
+            def __init__(self, x, y, wall):
+                self.x = x
+                self.y = y
+                self.wall = wall
+
+            def draw(self):
+                pass
 
     def _readFile(self):
+        bord = []
         with open(self.bordFile, "r") as file:
-            cont = file.read()
-        cont.split("")
+            content = file.read().split("\n")
+            return [list(i) for i in content]
+
+    def _decodeBoard(self):
+        fileBoard = self._readFile()
+        board = []
+        for indexX, x in enumerate(fileBoard):
+            board.append([])
+            for indexY, y in enumerate(x):
+                board[indexX].append(Tile(indexX, indexY, y == "#"))
+        return board
+
+
+    def getBoard(self):
+        return self._decodeBoard()
 
 
 class Assets:
@@ -20,3 +42,6 @@ class Assets:
 
     def getAssetByName(self, name):
         return
+
+b = BordReader()
+print(b.getBoard())
